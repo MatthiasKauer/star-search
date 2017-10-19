@@ -25,27 +25,15 @@ function! s:VStarsearch_searchCWord()
 		let @/ = wordStr
 	endif
 
+    " reset cursor to start of word so backward search works immediately
 	let savedUnnamed = @"
-	let savedS = @s
-	normal! "syiw
-	if wordStr != @s
+	normal! yiw
+	if wordStr != @"
 		normal! w
 	endif
-	let @s = savedS
-	let @" = savedUnnamed
-endfunction
-
-" https://github.com/bronson/vim-visual-star-search/
-function! s:VStarsearch_searchVWord()
-	let savedUnnamed = @"
-	let savedS = @s
-	normal! gv"sy
-	let @/ = '\V' . substitute(escape(@s, '\'), '\n', '\\n', 'g')
-	let @s = savedS
 	let @" = savedUnnamed
 endfunction
 
 nnoremap <silent> * :call <SID>VStarsearch_searchCWord()<CR>:set hls<CR>
-vnoremap <silent> * :<C-u>call <SID>VStarsearch_searchVWord()<CR>:set hls<CR>
 
 let &cpo = s:savedCpo
